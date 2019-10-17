@@ -1,0 +1,47 @@
+require(ggplot2) #Läser in ggplot2 för att kunna skapa diagram
+require(RColorBrewer) #Läser in Rcolorbrewer
+require(readxl)
+
+setwd("C:/Users/Acer/Downloads/labb2/DataLab2") #Säger vilken map filer ska läsas ifrång
+
+
+Data <- read_excel("VIS1 lon.xlsx") #Läser in filen och lägger datan i "Data" samt anger separatörerna som filen använder sig av
+
+Sprid <- ggplot(Data) + aes(x = Alder, y = Lon) + geom_point(color = "red",)  #Lägger in datan i diagramet och skapar det samt att det färgar prickarna röda
+
+Sprid <- Sprid + theme_bw() +  #sätter temat i diagramet 
+  
+  
+  theme(axis.title.y =                    #Skapar titel, stödlinjer  och centrerar titel och axel-namnen samt vänsterjusterar källan
+          element_text(angle = 0,
+                       hjust = 0,
+                       vjust = 0.5),
+        
+        plot.title = 
+          element_text(hjust = 0.5),
+        plot.caption = 
+          element_text(hjust = 0),
+        panel.grid.major.x = 
+          element_line(colour = "gray"),
+        panel.grid.minor.x = 
+          element_line(color = "light gray"),
+        panel.grid.major.y = 
+          element_line(colour = "gray"),
+        panel.grid.minor.y = 
+          element_line(color = "light gray")) +
+  
+  labs(title = "Sambandet mellan ålder och lön NotReal AB",
+       
+       x = "Ålder",
+       y = "Lön",
+       caption = "Källa: NotReal AB")
+
+
+Sprid <- Sprid + geom_smooth(method = lm, se = FALSE, color = "red")  #Skapar regressionslinjen samt ger den en röd färg
+
+
+Sprid   <- Sprid +   scale_x_continuous(breaks = seq( from = 15, to = 50, by = 5))  #Ändrar skalan på x-axeln för att ta bort oanvänt utrymme
+
+Sprid  #Skapar diagramet
+
+#head(Data, n = 33)
