@@ -1,0 +1,62 @@
+require(ggplot2)  #Läser in ggplot2 för att kunna skapa diagram
+require(RColorBrewer)  #Läser in Rcolorbrewer
+
+setwd("C:/Users/Dick/Desktop/R Projekt/DataLab/DataLab1") #Sätter mappen som filer läses ifrån
+
+
+Data <- read.csv("VIS1 lon.csv", sep = ";", dec = ",") #Läser in filen och lägger datan i "Data" samt anger separatörerna som filen använder sig av
+
+Data2 <- read.csv("VIS1 lon2.csv", sep = ";", dec = ",") #Läser in fil nummer 2 för att kunna skapa linje 2 
+
+Sprid <- ggplot(Data) + aes(x = Alder, y = Lon) + geom_point(color = "red")  #Skapar diagramet med datan samt sätter ut vilken data som ska till vilken axel och färgar prickarna röda
+
+
+Sprid <- Sprid + theme_bw() + #sätter temat i diagramet 
+  
+  
+  theme(axis.title.y =                #Skapar titel, stödlinjer  och centrerar titel och axel-namnen samt vänsterjusterar källan
+          element_text(angle = 0,
+                       hjust = 0,
+                       vjust = 0.5),
+        
+        plot.title = 
+          element_text(hjust = 0.5),
+        plot.caption = 
+          element_text(hjust = 0),
+        panel.grid.major.x = 
+          element_line(colour = "gray"),
+        panel.grid.minor.x = 
+          element_line(color = "light gray"),
+        panel.grid.major.y = 
+          element_line(colour = "gray"),
+        panel.grid.minor.y = 
+          element_line(color = "light gray")) +
+  
+  labs(title = "Sambandet mellan ålder och lön NotReal AB",
+       
+       x = "Ålder",
+       y = "Lön",
+       caption = "Källa: NotReal AB")
+
+Sprid <- Sprid + geom_smooth(method = lm, se = FALSE,aes(color = "med_extrem"),)  #Skapar regresionslinjen för värden med extremvärdet
+
+Sprid <- Sprid + geom_smooth(data = Data2, method = lm, se = FALSE, aes(color = "utan_extrem")) #Som ovan fast utan extremvärdet
+
+Sprid <- Sprid + scale_color_manual(name = "Fördelning",values =  c("med_extrem" = "red",  #Namnger legenden samt justerar namnet på de linjer som ingår i den
+                                                              
+                                                             "utan_extrem" = "blue"),
+                                 
+                                               labels = c("med_extrem" = "Med extremvärde",
+                                                          "utan_extrem" = "Utan extremvärden"))
+
+
+
+Sprid   <- Sprid +   scale_x_continuous(breaks = seq( from = 15, to = 50, by = 5)) #Ändrar skalan på x-axeln för att bättre visa värden och ta bort lite oanvänt utrymme i diagramet
+
+Sprid  #Skapar diagramet
+
+#head(Data, n = 33)  skriver ut all data i consolen användes för att kolla på extremvärdet innan det ändrades i Excel
+
+
+
+
