@@ -1,0 +1,49 @@
+require(ggplot2) #Läser in ggplot2 för att kunna skapa diagram
+require(RColorBrewer) #Läser in Rcolorbrewer
+require(readxl) #Gör så man kan läsa in Excel filer direkt iställer för att spara dem som csv och sedan använda read.csv
+
+setwd("C:/Users/Dick/Desktop/R Projekt/DataLab/DataLab2") #Sätter mappen som read_excel (eller read.csv) kollar efter filer att läsa in
+
+Data  <- read_excel("VIS2 Narkotikabrott.xlsx") #Pekar på filen som ska läsas in samt lägger datan i "Data"
+
+
+
+Linje <- ggplot(Data) + aes(x = År, y = Antal) + geom_line(size = 1) #Starten till diagramet som anger x och y samt ökar tjockleken på linjerna
+  
+                              #  geom_line(color = "blue", size = 1)
+
+Linje <- Linje + aes(group = Region, color = Region) + geom_line() #Delar upp Linjerna till två istället för en med båda länens värden
+
+Linje  <- Linje + theme_bw() + #Lägger in ett färg tema i diagramet
+  
+  
+  theme(axis.title.y =    #ändrar saker i temat till exempel titel och stödlinjer som nedan
+          element_text(angle = 0,
+                       hjust = 0,
+                       vjust = 0.5),
+        
+        plot.title = 
+          element_text(hjust = 0.5),    #Här läggs titel källa och underrubrik till samt att de tillsammans
+        plot.caption =                  #med Narkotikabrott och Ålder centreras i diagrammet. Stödlinjer läggs även till och
+          element_text(hjust = 0),      #får färgen grå och ljusgrå
+        plot.subtitle = 
+          element_text(hjust = 0.5),
+        panel.grid.major.x = 
+          element_line(colour = "gray"),
+        panel.grid.minor.x = 
+          element_line(color = "light gray"),
+        panel.grid.major.y = 
+          element_line(colour = "gray"),
+        panel.grid.minor.y = 
+          element_line(color = "light gray")) +
+  
+  labs(title = "Narkotikabrott i länen",  #titeln anges
+       
+       x = "Ålder", #Namnet på x-linjen anges
+       y = "Narkotikabrott",  #Namnet på y-linjen anges
+       caption = "Källa: Brottsförebyggande Rådet (Brå)", #Källan anges
+       subtitle = "Per 100000 invånare") #underrubriken anges
+
+
+Linje  #Visar diagrammet
+
